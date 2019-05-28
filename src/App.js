@@ -3,7 +3,8 @@ import "./App.css";
 
 import { Fragment } from "react";
 import LayoutHeader from "./layout/LayoutHeader.js";
-import Counter from "./01_counter/counter";
+import ExCounter from "./01_component/ExCounter";
+import ExBook from "./02_stateHandling/ExBook";
 
 function App() {
   const val = "value ~!";
@@ -17,13 +18,19 @@ function App() {
   return (
     <Fragment>
       <LayoutHeader version="0.1v" />
+      <h2>Basic</h2>
       <div className="App">
         <header className="App-header">
           <div>test {val}</div>
           <div style={sty1}>1+2 ? {v1 + v2}</div>
         </header>
       </div>
-      <Counter />
+      <hr />
+      <h2>01.Component</h2>
+      <ExCounter />
+      <hr />
+      <h2>02.stateHandling</h2>
+      <ExBook />
     </Fragment>
   );
 }

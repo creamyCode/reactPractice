@@ -1,0 +1,13 @@
+.Book {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  padding: 10px;
+  width: 600px;
+  border: 1px solid black;
+  margin-left: 10px;
+}
+
+.title {
+  text-align: center;
+}
