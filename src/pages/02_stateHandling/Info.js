@@ -3,7 +3,7 @@ import "./Info.css";
 
 class Info extends Component {
   shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.info !== this.props.info;
+    return nextState !== this.state || nextProps.info !== this.props.info;
   }
 
   state = {
