@@ -6,3 +6,4 @@ export { default as Posts } from "./03_routing/Posts";
 export { default as Post } from "./03_routing/Post";
 export { default as Menu } from "./03_routing/Menu";
 export { default as ExRouter } from "./03_routing/ExRouter";
+export { default as RExBook } from "./04_redux/RExBook";

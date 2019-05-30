@@ -10,6 +10,7 @@ class Router extends Component {
         <Route path="/01_component" component={pages.ExCounter} />
         <Route path="/02_state" component={pages.ExBook} />
         <Route path="/03_routing" component={pages.ExRouter} />
+        <Route path="/04_redux" component={pages.RExBook} />
       </div>
     );
   }

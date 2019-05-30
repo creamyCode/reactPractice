@@ -25,6 +25,11 @@ class Home extends Component {
               03_routing
             </NavLink>
           </li>
+          <li>
+            <NavLink exact to="/04_redux" activeStyle={activeStyle}>
+              04_redux
+            </NavLink>
+          </li>
         </ul>
       </div>
     );

@@ -1,0 +1,20 @@
+.Member {
+  display: flex;
+  padding: 10px;
+  align-items: center;
+  justify-content: space-between;
+  height: 30px;
+  border: 1px solid gainsboro;
+}
+
+.Member:not(:last-child) {
+  margin-bottom: 5px;
+}
+
+button:not(:last-child) {
+  margin-right: 5px;
+}
+
+input {
+  width: 70px;
+}
