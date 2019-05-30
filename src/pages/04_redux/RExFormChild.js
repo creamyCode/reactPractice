@@ -24,11 +24,6 @@ class RExFormChild extends Component {
     const { memberCreate } = this.props;
     e.preventDefault();
     if (this.state.age && this.state.name) {
-      // this.props.onCreate({ name: this.state.name, age: this.state.age });
-      // bookActions.memberCreate({
-      //   name: this.state.name,
-      //   age: this.state.age
-      // });
       memberCreate({
         name: this.state.name,
         age: this.state.age
@@ -41,7 +36,6 @@ class RExFormChild extends Component {
   };
 
   render() {
-    console.log(this.props);
     return (
       <div>
         <form onSubmit={this.submit}>

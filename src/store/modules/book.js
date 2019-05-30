@@ -5,29 +5,68 @@ import { Map } from "immutable";
 const CREATE = "book/CREATE";
 const UPDATE = "book/UPDATE";
 const DELETE = "book/DELETE";
+const CHANGE_INFO_INPUT = "book/CHANGE_INFO_INPUT";
+const CHANGE_INFO_MOD = "book/CHANGE_INFO_MOD";
+const CHANGE_KEYWORD = "book/CHANGE_KEYWORD";
 
 // 액션 생성 함수를 만듭니다.
-// 이 함수들은 나중에 다른 파일에서 불러와야 하므로 내보내줍니다.
-export const memberCreate = createAction(CREATE, member => member);
-export const memberUpdate = createAction(UPDATE, member => member);
-export const memberDelete = createAction(DELETE, delId => delId);
+// createAction (actionType, payloadCreator)
+// actionType : 액션 정의 내용
+// payloadCreator : 페이로드 생성함수
+export const memberCreate = createAction(CREATE, info => info);
+export const memberUpdate = createAction(UPDATE, (id, info) => ({
+  id: id,
+  info: info
+}));
+export const memberDelete = createAction(DELETE, id => id);
+export const changeInput = createAction(CHANGE_INFO_INPUT, (id, key, val) => ({
+  id: id,
+  key: key,
+  val: val
+}));
+export const changeInfoMod = createAction(CHANGE_INFO_MOD, id => id);
+export const changeKeyword = createAction(CHANGE_KEYWORD, keyword => keyword);
 
 const initialState = Map({
-  members: Map()
+  keyword: "",
+  infos: Map()
 });
 
 export default handleActions(
   {
-    [CREATE]: (state, { payload: member }) => {
-      const members = state.get("members");
-      const id = members.count() + 1;
-      return state.setIn(["members", id], { ...member, id: id });
+    [CREATE]: (state, { payload: memberInfo }) => {
+      const infos = state.get("infos");
+      const id = infos.count() + 1;
+      return state.setIn(
+        ["infos", id],
+        Map({
+          memberInfo: Map({ ...memberInfo, id: id }),
+          input: Map(memberInfo),
+          editMod: false
+        })
+      );
     },
-    [UPDATE]: (state, { payload: member }) => {
-      return state.setIn(["members", member.id], member);
+    [UPDATE]: (state, { payload: { id, info } }) => {
+      return state.setIn(
+        ["infos", id],
+        Map({
+          memberInfo: Map({ ...info, id: id }),
+          input: Map(info),
+          editMod: false
+        })
+      );
     },
-    [DELETE]: (state, { payload: delId }) => {
-      return state.deleteIn(["members", delId]);
+    [DELETE]: (state, { payload: id }) => {
+      return state.deleteIn(["infos", id]);
+    },
+    [CHANGE_INFO_INPUT]: (state, { payload: { id, key, val } }) => {
+      return state.setIn(["infos", id, "input", key], val);
+    },
+    [CHANGE_INFO_MOD]: (state, { payload: id }) => {
+      return state.setIn(["infos", id, "editMod"], true);
+    },
+    [CHANGE_KEYWORD]: (state, { payload: key }) => {
+      return state.set("keyword", key);
     }
   },
   initialState

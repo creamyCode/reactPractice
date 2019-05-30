@@ -8,79 +8,59 @@ class RInfo extends Component {
   id = this.props.id;
   bookActions = this.props.bookActions;
 
-  state = {
-    modState: false,
-    name: this.props.getMember(this.id).name,
-    age: this.props.getMember(this.id).age
-  };
-
   shouldComponentUpdate(nextProps, nextState) {
-    return nextState !== this.state;
+    const cInfo = this.props.getInfo(this.id);
+    const nInfo = nextProps.getInfo(this.id);
+    return cInfo !== nInfo;
   }
 
+  changeMode = () => {
+    this.bookActions.changeInfoMod(this.id);
+  };
+
   change = e => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
+    this.bookActions.changeInput(this.id, e.target.name, e.target.value);
   };
 
   delete = () => {
-    // this.props.onDelete(this.props.info.id);
     this.bookActions.memberDelete(this.id);
   };
 
   update = () => {
-    // this.props.onUpdate({
-    //   id: this.props.info.id,
-    //   name: this.state.name,
-    //   age: this.state.age
-    // });
-    this.bookActions.memberUpdate({
-      id: this.id,
-      name: this.state.name,
-      age: this.state.age
-    });
-    this.setState({
-      modState: false
-    });
+    const input = this.props.getInput(this.id);
+    this.bookActions.memberUpdate(this.id, input.toJS());
   };
 
   render() {
     console.log("Info Render !!");
-    // const member = this.props.getMember(this.id);
+
+    const memberInfo = this.props.getMemberInfo(this.id);
+    const input = this.props.getInput(this.id);
 
     const infoView = (
       <div className="Info">
-        이름 : <span>{this.state.name}</span>, 나이 :{" "}
-        <span>{this.state.age}</span>
+        이름 : <span>{memberInfo.get("name")}</span>, 나이 :{" "}
+        <span>{memberInfo.get("age")}</span>
       </div>
     );
 
     const editView = (
       <div className="Info">
         이름 :{" "}
-        <input name="name" onChange={this.change} value={this.state.name} />,
+        <input name="name" onChange={this.change} value={input.get("name")} />,
         나이 :{" "}
-        <input name="age" onChange={this.change} value={this.state.age} />
+        <input name="age" onChange={this.change} value={input.get("age")} />
       </div>
     );
 
-    const modBtn = (
-      <button
-        onClick={() => {
-          this.setState({ modState: true });
-        }}
-      >
-        수정
-      </button>
-    );
+    const modBtn = <button onClick={this.changeMode}>수정</button>;
 
     const applyBtn = <button onClick={this.update}>적용</button>;
     return (
       <div className="Member">
-        {!this.state.modState ? infoView : editView}
+        {!this.props.getEditMod(this.id) ? infoView : editView}
         <div className="btnCtrl">
-          {!this.state.modState ? modBtn : applyBtn}
+          {!this.props.getEditMod(this.id) ? modBtn : applyBtn}
           <button onClick={this.delete}>삭제</button>
         </div>
       </div>
@@ -90,7 +70,10 @@ class RInfo extends Component {
 
 export default connect(
   ({ book }) => ({
-    getMember: id => book.getIn(["members", id])
+    getInfo: id => book.getIn(["infos", id]),
+    getMemberInfo: id => book.getIn(["infos", id, "memberInfo"]),
+    getInput: id => book.getIn(["infos", id, "input"]),
+    getEditMod: id => book.getIn(["infos", id, "editMod"])
   }),
   dispatch => ({
     bookActions: bindActionCreators(bookActions, dispatch)
